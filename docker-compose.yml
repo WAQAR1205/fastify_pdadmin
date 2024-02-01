@@ -1,0 +1,39 @@
+version: "3.3"
+services:
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    networks:
+      - network
+
+  pgsql:
+    image: postgres:latest
+    # restart: always
+    ports:
+      - 5432:5432
+    environment:
+      # use a env file for that part later
+      # https://docs.docker.com/compose/environment-variables/#the-env_file-configuration-option
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: waada_dev
+      # DIALECT: postgres
+      # TZ: "Asia/Karachi" 
+      # TIMEZONE: "Asia/Karachi"
+      # POSTGRES_PORT: 5432
+      # If we want to access more easily to the database (not recommended)
+      PGDATA: /var/lib/postgresql/data/pg_data
+    volumes:
+     - pg_data:/var/lib/postgresql/data/pg_data
+    networks:
+      - network
+
+volumes:
+  pg_data:
+    driver: local
+
+networks:
+  network:
